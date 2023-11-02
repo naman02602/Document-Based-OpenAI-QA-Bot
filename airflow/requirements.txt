@@ -1,0 +1,6 @@
+pypdf
+PyPDF2
+pinecone-client
+openai
+tiktoken 
+requests

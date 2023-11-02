@@ -1,0 +1,73 @@
+from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from db.database import get_db
+from fastapi_service.models import User
+from fastapi_service.token import create_access_token
+from module.hashing import get_password_hash, verify_password
+from sqlalchemy.orm import Session
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+
+from fastapi import FastAPI, HTTPException, status, Depends
+from fastapi_service.models import SignupRequest, SignupResponse
+from module.hashing import get_password_hash
+from sqlalchemy import create_engine, text, exc
+from sqlalchemy.orm import Session
+from routers import authentication
+from fastapi_service.oauth2 import get_current_user
+
+DATABASE_URL = "mssql+pyodbc://team4admin:team4-bigdata@srv-big-data.database.windows.net/team4bigdata?driver=ODBC+Driver+17+for+SQL+Server"
+engine = create_engine(DATABASE_URL)
+
+
+def get_db():
+    db = Session(bind=engine)
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+router = APIRouter(tags=["Authentication"])
+
+
+@router.post("/signup", response_model=SignupResponse)
+async def signup(request: SignupRequest, db: Session = Depends(get_db)):
+    hashed_password = get_password_hash(request.password)
+    query = text(
+        "INSERT INTO users (username, fullname, password) VALUES (:username, :fullname, :password)"
+    )
+    values = {
+        "username": request.username,
+        "fullname": request.fullname,
+        "password": hashed_password,
+    }
+    try:
+        # Start a new transaction
+        db.begin()
+        db.execute(query, values)  # Execute the custom INSERT statement
+        db.commit()
+        return {"username": request.username, "fullname": request.fullname}
+    except exc.SQLAlchemyError as e:  # Catch any SQLAlchemy errors
+        db.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
+
+@router.post("/login")
+def login(
+    request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
+):
+    user = db.query(User).filter(User.username == request.username).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail=f"Invalid Credentials"
+        )
+    if not verify_password(request.password, user.password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail=f"Incorrect password"
+        )
+
+    access_token = create_access_token(data={"sub": user.username})
+    return {"access_token": access_token, "token_type": "bearer"}
