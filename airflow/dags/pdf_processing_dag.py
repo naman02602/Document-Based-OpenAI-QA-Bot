@@ -22,7 +22,7 @@ from airflow.hooks.base_hook import BaseHook
 
 # Access the Google Cloud connection
 dag_directory = os.path.dirname(os.path.abspath(__file__))
-keyfile_path = os.path.join(dag_directory, 'deft-scout-403222-814e668e9144.json')
+keyfile_path = os.path.join(dag_directory, 'deft-scout-403222-2fb0d39d8a65.json')
 
 storage_client = storage.Client.from_service_account_json(keyfile_path)
 
@@ -32,7 +32,7 @@ object_name = 'embeddings.csv'
 
 # Define the user input parameters
 user_input = {
-    "pdf_urls": Param(default="https://sample1.pdf,https://sample2.pdf", type="string"),
+    "pdf_urls": Param(default="https://www.sec.gov/files/form1-e.pdf,https://www.sec.gov/files/form1-k.pdf,https://www.sec.gov/files/form1-n.pdf,https://www.sec.gov/files/form1-sa.pdf,https://www.sec.gov/files/form1-z.pdf", type="string"),
     "processing_library": Param(default="PyPdf", type="string"),
     "api_address": Param(default="", type="string"),
 }

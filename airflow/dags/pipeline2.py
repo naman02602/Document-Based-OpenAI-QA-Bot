@@ -16,7 +16,7 @@ from airflow.models import Variable
 index = None 
 
 dag_directory = os.path.dirname(os.path.abspath(__file__))
-keyfile_path = os.path.join(dag_directory, 'deft-scout-403222-814e668e9144.json')
+keyfile_path = os.path.join(dag_directory, 'deft-scout-403222-2fb0d39d8a65.json')
 
 storage_client = storage.Client.from_service_account_json(keyfile_path)
 

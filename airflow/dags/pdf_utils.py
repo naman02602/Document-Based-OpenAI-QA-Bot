@@ -145,57 +145,6 @@ def split_context_to_rows(df, max_token):
 
     return result_df
 
-
-# def break_text_into_sections(df, section_names_dict):
-#     result = []
-#     for index, row in df.iterrows():
-#         file_name = row["form_title"]
-#         file_url = row["form_url"]
-#         text = row["context"]
-#         section_names = section_names_dict.get(file_url, [])
-#         for section_name in section_names:
-#             sections = text.split(section_name)
-#             for section_content in sections[1:]:
-#                 section_name = section_name.strip()  # Remove leading/trailing spaces
-#                 section_content = (
-#                     section_content.strip()
-#                 )  # Remove leading/trailing spaces
-#                 num_tokens = count_tokens(section_content)
-#                 if num_tokens > 2000:
-#                     # Split the section into smaller parts with a maximum of 2000 tokens
-#                     section_tokens = section_content.split()
-#                     current_section = ""
-#                     for token in section_tokens:
-#                         if count_tokens(current_section + token) <= 2000:
-#                             current_section += token + " "
-#                         else:
-#                             result.append(
-#                                 (
-#                                     file_name,
-#                                     file_url,
-#                                     section_name,
-#                                     count_tokens(current_section),
-#                                     current_section,
-#                                 )
-#                             )
-#                             current_section = token + " "
-#                     if current_section.strip():
-#                         result.append(
-#                             (
-#                                 file_name,
-#                                 file_url,
-#                                 section_name,
-#                                 count_tokens(current_section),
-#                                 current_section,
-#                             )
-#                         )
-#                 else:
-#                     result.append(
-#                         (file_name, file_url, section_name, num_tokens, section_content)
-#                     )
-#     return result
-
-
 # calculate embeddings
 EMBEDDING_MODEL = "text-embedding-ada-002"  # OpenAI's best embeddings as of Apr 2023
 
@@ -207,33 +156,3 @@ def generate_embeddings(text):
 
     # Extract the embeddings from the API response and join them as a comma-separated string
     return response["data"][0]["embedding"]
-
-
-url_dict = {
-    "https://www.sec.gov/files/form1-e.pdf": [
-        "NOTIFICATION UNDER REGULATION E",
-        "SIGNATURES",
-    ],
-    "https://www.sec.gov/files/form1-k.pdf": [
-        "GENERAL INSTRUCTIONS",
-        "PART I \nNOTIFICATION",
-        "PART II \nINFORMATION TO BE INCLUDED IN REPORT",
-        "SIGNATURES",
-    ],
-    "https://www.sec.gov/files/form1-n.pdf": [
-        "GENERAL INSTRUCTIONS",
-        "EXECUTION:",
-        "EXHIBITS",
-    ],
-    "https://www.sec.gov/files/form1-sa.pdf": [
-        "GENERAL\n INSTRUCTIONS",
-        "INFORMATION TO BE INCLUDED IN REPORT",
-        "SIGNATURES",
-    ],
-    "https://www.sec.gov/files/form1-z.pdf": [
-        "GENERAL INSTRUCTIONS",
-        "PRELIMINARY INFORMATION",
-        "PART I \nSummary Information Regarding the Offering and Proceeds",
-        "PART II \nCertification of Suspension of Duty to File Reports",
-    ],
-}
