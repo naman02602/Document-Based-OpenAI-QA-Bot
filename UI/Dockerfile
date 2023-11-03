@@ -12,6 +12,6 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 ### Container Env same as local at this point
-EXPOSE 8090
+EXPOSE 8501
 
-CMD ["streamlit", "run", "main.py", "--server.port", "8090"]
+CMD ["streamlit", "run", "main.py", "--server.port", "8501"]
