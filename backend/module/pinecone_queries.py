@@ -1,11 +1,11 @@
 import pinecone
 
-pinecone_api_key = ""
+pinecone_api_key = "6e0b7ddc-cec5-4df7-b06f-78a30dde865a"
 pinecone.init(api_key=pinecone_api_key)
 
 
 def query_pinecone(query, top_k, selected_pdfs=None):
-    pinecone_api_key = ""
+    pinecone_api_key = "6e0b7ddc-cec5-4df7-b06f-78a30dde865a"
     pinecone.init(api_key=pinecone_api_key, environment="gcp-starter")
     index = pinecone.Index(index_name="damg7245-qabot")
 
@@ -16,7 +16,7 @@ def query_pinecone(query, top_k, selected_pdfs=None):
         filter_conditions = [{"form_title": {"$eq": pdf}} for pdf in selected_pdfs]
         # Combine the filter condition dictionaries with an OR operation
         filter_condition = {"$or": filter_conditions}
-
+        print(filter_condition)
         # Execute the query with the filter condition
         results = index.query(
             query, top_k=top_k, include_metadata=True, filter=filter_condition

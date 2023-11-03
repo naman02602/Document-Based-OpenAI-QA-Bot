@@ -1,7 +1,8 @@
 import streamlit as st
 import requests  # Import the requests library
+import os
 
-FASTAPI_SERVICE_URL = "http://localhost:8000"  # Replace with your FastAPI service URL
+FASTAPI_SERVICE_URL = os.getenv("FASTAPI_SERVICE_URL")  # Replace with your FastAPI service URL
 
 
 def ask_question(question, selected_pdfs, token):
@@ -49,7 +50,6 @@ def show():
     )
     if user_input:
         if st.button("Submit"):
-            user_input = ""
             if not selected_pdfs:
                 selected_pdfs = pdf_options
 
@@ -66,7 +66,7 @@ def show():
             # Error handling is done inside ask_question function
         else:
             st.warning("Please enter a question")
-
+        user_input = ""
     # st.markdown(
     #     f"<div style='background-color: lightblue; padding: 10px; border-radius: 10px;'>Bot: {answer}</div>",
     #     unsafe_allow_html=True,

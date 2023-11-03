@@ -11,6 +11,7 @@ from pdf_utils import (
     fetch_pdf_from_url,
     parse_pdf_with_pypdf,
     split_context_to_rows,
+    parse_pdf_with_nougat,
 )
 import yaml
 import openai
@@ -33,6 +34,7 @@ object_name = 'embeddings.csv'
 user_input = {
     "pdf_urls": Param(default="https://sample1.pdf,https://sample2.pdf", type="string"),
     "processing_library": Param(default="PyPdf", type="string"),
+    "api_address": Param(default="", type="string"),
 }
 
 # Task to extract parameters
@@ -40,11 +42,10 @@ def extract_parameters(**kwargs):
     ti = kwargs["ti"]
     params = kwargs["dag_run"].conf
     pdf_urls = params["pdf_urls"].split(",")  # Split the string into a list of URLs
-    credentials_file = params.get(
-        "credentials_file"
-    )  # Extract the credentials file path
+    processing_library = params["processing_library"]
+    api_address = params["api_address"]
     ti.xcom_push(
-        key="params", value={"pdf_urls": pdf_urls, "credentials_file": credentials_file}
+        key="params", value={"pdf_urls": pdf_urls, "processing_library": processing_library, "api_address": api_address}
     )
 
 
@@ -52,16 +53,32 @@ def download_and_parse_pdfs(**kwargs):
     ti = kwargs["ti"]
     params = ti.xcom_pull(task_ids="extract_parameters", key="params")
     pdf_urls = params.get("pdf_urls", [])
+    processing_library = params.get("processing_library", "")
+    api_address = params.get("api_address", "")
     data_dict = {"context": [], "form_url": []}
 
+    print("Processing library", processing_library)
+
     for url in pdf_urls:
-        # Use 'fetch_pdf_from_url' to fetch the PDF content from the provided URL and store in memory
-        pdf_in_memory = fetch_pdf_from_url(url)
-        # Use 'parse_pdf_with_pypdf' to parse the content of the PDF and store the parsed content in a string variable.
-        pdf_content = parse_pdf_with_pypdf(pdf_in_memory)
-        # Append the token count and the content of the current paragraph to the data dictionary
-        data_dict["context"].append(pdf_content)
-        data_dict["form_url"].append(url)
+        if processing_library == "PyPdf":
+            # Use 'fetch_pdf_from_url' to fetch the PDF content from the provided URL and store in memory
+            print("URLs", url)
+            pdf_in_memory = fetch_pdf_from_url(url)
+            # Use 'parse_pdf_with_pypdf' to parse the content of the PDF and store the parsed content in a string variable.
+            pdf_content = parse_pdf_with_pypdf(pdf_in_memory)
+            # Append the token count and the content of the current paragraph to the data dictionary
+            data_dict["context"].append(pdf_content)
+            data_dict["form_url"].append(url)
+            print("Data Dict", data_dict["form_url"])
+        elif processing_library == "Nougat":
+            print("In here")
+            print("API address", api_address)
+            pdf_content = parse_pdf_with_nougat(url, api_address)
+            print("Pdf content", len(pdf_content))
+            data_dict["context"].append(pdf_content)
+            data_dict["form_url"].append(url)
+        else:
+            print('Please provide valid parsing library')
 
     # Convert the parsed_texts_dict to a DataFrame
     df = pd.DataFrame(data_dict)

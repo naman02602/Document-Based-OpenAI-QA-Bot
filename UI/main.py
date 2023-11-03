@@ -1,9 +1,9 @@
 # # main.py
 import streamlit as st
-from UI.signup import show as show_signup
-from UI.login import show as show_login
-from UI.home import show as show_home
-from UI.chatbot import show as show_chatbot
+from signup import show as show_signup
+from login import show as show_login
+from home import show as show_home
+from chatbot import show as show_chatbot
 
 
 def main():

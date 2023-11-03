@@ -5,6 +5,18 @@ from fastapi_service.models import User
 from fastapi_service.token import create_access_token
 from module.hashing import get_password_hash, verify_password
 from sqlalchemy.orm import Session
+import pymysql
+from fastapi import HTTPException, status, Depends
+from fastapi_service.models import SignupRequest, SignupResponse
+from sqlalchemy import create_engine, text, exc
+
+from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from db.database import get_db
+from fastapi_service.models import User
+from fastapi_service.token import create_access_token
+from module.hashing import get_password_hash, verify_password
+from sqlalchemy.orm import Session
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,8 +30,19 @@ from sqlalchemy.orm import Session
 from routers import authentication
 from fastapi_service.oauth2 import get_current_user
 
-DATABASE_URL = "mssql+pyodbc://team4admin:team4-bigdata@srv-big-data.database.windows.net/team4bigdata?driver=ODBC+Driver+17+for+SQL+Server"
+
+# DATABASE_URL = "mssql+pyodbc://team4admin:team4-bigdata@srv-big-data.database.windows.net/team4bigdata?driver=ODBC+Driver+17+for+SQL+Server"
+
+
+DATABASE_URL = "mysql+pymysql://root:root@34.73.240.77/damg7245"
+
 engine = create_engine(DATABASE_URL)
+
+
+# conn = pymysql.connect(
+#     host="34.73.240.77", user="root", password="root", database="damg7245"
+# )
+# engine = conn.cursor()
 
 
 def get_db():

@@ -1,8 +1,9 @@
 import streamlit as st
 import requests  # Import the requests library
+import os
 
 # Define the URL of your FastAPI service
-FASTAPI_SERVICE_URL = "http://localhost:8000"
+FASTAPI_SERVICE_URL = os.getenv("FASTAPI_SERVICE_URL") 
 
 
 def show():
