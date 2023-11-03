@@ -12,8 +12,6 @@ def query_pinecone(query, top_k, selected_pdfs=None):
 
     # Prepare the filter condition
     if selected_pdfs:
-        filter_condition = {"form_title": {"$eq": "form1-e.pdf"}}
-
         filter_conditions = [{"form_title": {"$eq": pdf}} for pdf in selected_pdfs]
         # Combine the filter condition dictionaries with an OR operation
         filter_condition = {"$or": filter_conditions}
@@ -35,7 +33,7 @@ def format_query(query, context):
     # concatinate all context passages
     context = " ".join(context)
     # concatenate the query and context passages
-    query = f"question: {query} \nYou are a chat bot. You have been assigned to answer the question from the context provided from SEC forms. \
-    If there is anything in question that is not relevant to the context provided to you, then answer 'I don't know'. \
-    Do not use your own knowledge to answer the question, but only the context given. \ncontext: {context}"
+    query = f"QUESTION: {query} \nYou are a chat bot. You have been assigned to answer the question from the CONTEXT provided from SEC FORMS. \
+    If there is anything in QUESTION that is NOT RELEVANT to the CONTEXT provided to you, then answer 'I don't know'. \
+    Do not use your own knowledge to answer the question, but only the CONTEXT given. \nCONTEXT: {context}"
     return query
