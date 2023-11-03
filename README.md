@@ -52,6 +52,6 @@ SEC forms: [https://www.sec.gov/forms](https://www.sec.gov/forms)
 
 | Name            | Contribution % | Contributions |
 |-----------------|----------------|---------------|
-| Naman Gupta     |     33.3%      |              |
-| Jagruti Agrawal |     33.3%      |               |
-| Divyesh Rajput  |     33.3%      |                |
+| Naman Gupta     |     33.3%      |    Q/A Bot, Embeddings Generation, Pinecone, Readme.md, Codelab, Pipeline 1, Google Cloud Storage         |
+| Jagruti Agrawal |     33.3%      |     Docker containers for each microservices, Pipeline 2, Diagram, Codelab         |
+| Divyesh Rajput  |     33.3%      |    Streamlit Application, FastAPI, JWT Tokens, Pipeline 1, Logging, VM Instance           |
