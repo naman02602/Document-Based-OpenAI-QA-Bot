@@ -1,6 +1,11 @@
 import streamlit as st
 import requests  # Import the requests library
 import os
+import logging
+from logging_config import logger
+from log_uploader import upload_logs_to_gcp
+
+logger = logging.getLogger(__name__)
 
 FASTAPI_SERVICE_URL = os.getenv("FASTAPI_SERVICE_URL")  # Replace with your FastAPI service URL
 
@@ -39,17 +44,10 @@ def show():
         st.session_state["chat_history"] = []
 
     user_input = st.text_input("Ask me anything...")
-
-    # st.markdown(
-    #     f"<div style='background-color: lightblue; padding: 10px; border-radius: 10px;'>You: {user_input}</div>",
-    #     unsafe_allow_html=True,
-    # )
-    st.markdown(
-        f"<div style='background-color: lightblue; padding: 10px; border-radius: 10px; color: black; font-weight: bold;'>You: {user_input}</div>",
-        unsafe_allow_html=True,
-    )
     if user_input:
         if st.button("Submit"):
+            logger.info(f"User input: {user_input}")
+            logger.info(f"Selected pdfs: {selected_pdfs}")
             if not selected_pdfs:
                 selected_pdfs = pdf_options
 
@@ -67,11 +65,6 @@ def show():
         else:
             st.warning("Please enter a question")
         user_input = ""
-    # st.markdown(
-    #     f"<div style='background-color: lightblue; padding: 10px; border-radius: 10px;'>Bot: {answer}</div>",
-    #     unsafe_allow_html=True,
-    # )
-    # Display chat history
     for message in st.session_state["chat_history"]:
         st.write(f"{message['sender']}: {message['message']}")
 
@@ -94,3 +87,6 @@ def show():
         file_name="chat_history.txt",
         mime="text/plain",
     )
+    if st.button("Generate Logs"):
+        upload_logs_to_gcp()
+        st.write("Logs generated!")

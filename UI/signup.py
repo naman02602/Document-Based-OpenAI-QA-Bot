@@ -1,6 +1,10 @@
 import streamlit as st
 import requests
 import os
+import logging
+from logging_config import logger
+
+logger = logging.getLogger(__name__)
 
 # Define the URL of your FastAPI service
 FASTAPI_SERVICE_URL = os.getenv("FASTAPI_SERVICE_URL") 
@@ -24,5 +28,7 @@ def show():
         print(response)
         if response.status_code == 200:
             st.success(f"User {username} created successfully!")
+            logging.info(f"User {username} created successfully!")
         else:
             st.error(f"An error occurred: {response.json()}")
+            logging.error(f"Signup error for username {username}: {response.json()}")

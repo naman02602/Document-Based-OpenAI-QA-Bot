@@ -7,4 +7,4 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # The format of the log message
 )
 
-logger = logging.getLogger(_name_)
+logger = logging.getLogger(__name__)

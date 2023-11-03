@@ -4,7 +4,10 @@ from signup import show as show_signup
 from login import show as show_login
 from home import show as show_home
 from chatbot import show as show_chatbot
+import logging
+from logging_config import logger
 
+logger = logging.getLogger(__name__)
 
 def main():
     # Initialize session state variables
@@ -35,6 +38,7 @@ def main():
     elif st.session_state["page"] == "Logout":
         st.session_state.pop("token", None)  # Remove token from session state
         st.session_state["page"] = "Login"  # Set page to Login
+        logger.warning("User logged out")
         st.experimental_rerun()  # Rerun the script to update the UI
 
 

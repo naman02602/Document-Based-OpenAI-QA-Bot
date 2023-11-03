@@ -1,2 +1,5 @@
 streamlit
 requests
+pymysql
+python-dotenv
+sqlalchemy
