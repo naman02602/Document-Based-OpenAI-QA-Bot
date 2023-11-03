@@ -12,7 +12,7 @@ This project's primary challenge is to automate the creation of embeddings and p
 
 # Architecture Diagram:
 
-
+![Architecture Diagram](https://raw.githubusercontent.com/BigDataIA-Fall2023-Team4/Assignment_03/main/Diagrams/Architecture%20diagram.png?token=GHSAT0AAAAAACI2QJ3QFJTWUCWIBMYRWV3SZKFJM2A)
 
 
 # Technologies Used:
