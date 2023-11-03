@@ -2,11 +2,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import pymysql
+import os
 
 # DATABASE_URL = "mssql+pyodbc://team4admin:team4-bigdata@srv-big-data.database.windows.net/team4bigdata?driver=ODBC+Driver+17+for+SQL+Server"
 
 
-DATABASE_URL = "mysql+pymysql://root:root@34.73.240.77/damg7245"
+DATABASE_URL = os.getenv("DATABASE_URL")
 # conn = pymysql.connect(
 #     host="34.73.240.77", user="root", password="root", database="damg7245"
 # )

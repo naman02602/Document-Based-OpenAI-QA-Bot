@@ -1,11 +1,12 @@
 import pinecone
+import os
 
-pinecone_api_key = "6e0b7ddc-cec5-4df7-b06f-78a30dde865a"
+pinecone_api_key = os.getenv("PINECONE_API_KEY")
 pinecone.init(api_key=pinecone_api_key)
 
 
 def query_pinecone(query, top_k, selected_pdfs=None):
-    pinecone_api_key = "6e0b7ddc-cec5-4df7-b06f-78a30dde865a"
+    pinecone_api_key = os.getenv("PINECONE_API_KEY")
     pinecone.init(api_key=pinecone_api_key, environment="gcp-starter")
     index = pinecone.Index(index_name="damg7245-qabot")
 
@@ -34,5 +35,7 @@ def format_query(query, context):
     # concatinate all context passages
     context = " ".join(context)
     # concatenate the query and context passages
-    query = f"question: {query} context: {context}"
+    query = f"question: {query} \nYou are a chat bot. You have been assigned to answer the question from the context provided from SEC forms. \
+    If there is anything in question that is not relevant to the context provided to you, then answer 'I don't know'. \
+    Do not use your own knowledge to answer the question, but only the context given. \ncontext: {context}"
     return query

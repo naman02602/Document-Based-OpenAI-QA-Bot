@@ -306,6 +306,8 @@ services:
     restart: always
     environment:
       - FASTAPI_SERVICE_URL=http://backend:8000
+    env_file:
+      - .env
 
   backend:
     build:
@@ -313,6 +315,8 @@ services:
     ports:
       - "8000:8000"
     restart: always
+    env_file:
+      - .env
 
 volumes:
   postgres-db-volume:

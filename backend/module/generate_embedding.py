@@ -1,6 +1,7 @@
 import openai
+import os
 
-openai.api_key = "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"
+openai.api_key = os.getenv("OPENAI_API_KEY")
 EMBEDDING_MODEL = "text-embedding-ada-002"
 
 
