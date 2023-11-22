@@ -2,7 +2,7 @@
 
 Link to the application:
 
-[Codelab](https://codelabs-preview.appspot.com/?file_id=12V29Rn_Nx-NDkgDGsAxt18EHa0Y63-0kB3j7cFtKiKo#9)
+[Codelab](https://codelabs-preview.appspot.com/?file_id=1lr0TH95fZP92NavnkxypWGXS7bmKC_0a4mSmTC1rKjw#0)
 
 [Demo](https://youtu.be/64ymF6XK77U)
 
