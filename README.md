@@ -47,8 +47,6 @@ This project's primary challenge is to automate the creation of embeddings and p
 
 SEC forms: [https://www.sec.gov/forms](https://www.sec.gov/forms)
 
-# Project Structure:
-
 
 
 # Team Contribution:
